@@ -28,6 +28,14 @@ exports.cssLoaders = function (options) {
       sourceMap: options.sourceMap
     }
   }
+   // added  resolve-url-loaderr with sourceMap true
+   const resolveUrlLoader = {
+    loader: 'resolve-url-loader',
+    options: {
+      sourceMap: options.sourceMap
+    }
+  }
+  
 
   // generate loader string to be used with extract text plugin
   function generateLoaders (loader, loaderOptions) {
