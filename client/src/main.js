@@ -7,11 +7,13 @@ import '@/plugins/bootstrap'
 import BootstrapVue from 'bootstrap-vue'
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap-vue/dist/bootstrap-vue.css"
-
-
+import VueApexCharts from 'vue-apexcharts'
 
 var VueResource = require('vue-resource');
 Vue.use(VueResource);
+
+Vue.component('apexchart', VueApexCharts)
+
 
 
 Vue.config.productionTip = false
@@ -20,6 +22,6 @@ Vue.use(BootstrapVue)
 new Vue({
   el: '#app',
   router,
-  components: { App },
+  components: { App }, 
   template: '<App/>'
 })

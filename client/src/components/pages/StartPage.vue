@@ -177,14 +177,16 @@
 <script>
 //import scss from '../../assets/scss/materialize.min.css'
 import TaskService from '@/services/TaskService'
-import io from 'socket.io-client';
+
+import firebase from '../Firebase'
+
 
   export default {
         data() {
        return {
-         socket : io('localhost:3001'),
+   
          show : false,
-
+          ref: firebase.firestore().collection('tasks'),
           columns: ['Индекс',
           'Дата приема получения',
           'Номер поручения',
@@ -202,6 +204,16 @@ import io from 'socket.io-client';
          },
        }
    },
+  created () {
+    this.ref.onSnapshot((querySnapshot) => {
+      this.tasks = [];
+      querySnapshot.forEach((doc) => {
+        this.tasks.push({
+          title: doc.data().title
+        });
+      });
+    });
+  },
          methods: {
             sendMessage(e) {
             e.preventDefault();
@@ -310,11 +322,11 @@ import io from 'socket.io-client';
     
   },
   
-  mounted () {
-       this.getTasks();
+  // mounted () {
+  //      this.getTasks();
        
-       //this.activeTasks()
-    }
+  //      //this.activeTasks()
+  //   }
   }
 
 //function to sort table data alphabetically

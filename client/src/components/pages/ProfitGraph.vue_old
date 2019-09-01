@@ -1,0 +1,106 @@
+<template>
+ 
+
+<div id="app">
+ 
+   
+     
+  <div class="row">
+    <div class="col-sm">
+      <div>
+     <apexchart width="500" type="line" :options="options" :series="series"></apexchart>
+    </div>
+     </div>
+    <div class="col-sm">
+     Выручка операционного отдела
+    
+    <button @click="addToMassive()">Добавить значение</button>
+    </div>
+  </div>
+</div>
+  
+  
+</template>
+
+<script>
+//import scss from '../../assets/scss/materialize.min.css'
+import TaskService from '@/services/TaskService'
+
+import firebase from '../Firebase'
+
+
+  export default {
+        data() {
+       return {
+   
+         show : false,
+          ref: firebase.firestore().collection('tasks'),
+          colPlan: ['index','Наименование','Сумма','Факт'],
+          colFact: ['index','Наименование','Сумма'],
+          plan:[{
+            title:"Выручка",
+            profit: 40000
+          }],
+          fact: 0,
+          extFact:[{
+            title:"Выручка",
+            profit: 54
+          }],
+          
+         tasks: [],
+         bins: [],
+        input: {
+        title: "",
+        profit: "",
+        emploee : "",
+         },
+       }
+   },
+  created () {
+    this.ref.onSnapshot((querySnapshot) => {
+      this.tasks = [];
+      this.fact = 0;
+      querySnapshot.forEach((doc) => {
+        this.tasks.push({
+         
+          title: doc.data().title,
+           profit: doc.data().profit,
+          
+        });
+          console.log(this.tasks)
+          this.fact += Number(doc.data().profit);
+      });
+    });
+  },
+         methods: {
+    add:  async function () {
+      this.data = Object.assign({},{"title" :this.input.title,
+          "profit":Number(this.input.profit),
+          "emploee":this.input.emploee})
+        this.ref.add(this.data)
+        var factSum = JSON.parse(this.tasks).toString()
+       
+       for (var i = 0; i < factSum.length; i++) {
+        this.fact += factSum[i].profit;
+}}
+}
+}
+
+
+   
+  
+  
+//function to sort table data alphabetically
+console.log("Готово")
+var ordonner = function(a, b) {
+  return (a.lname > b.lname);
+};
+
+
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="scss"  scoped>
+@import '../../assets/materialize.min.css';
+
+</style>
