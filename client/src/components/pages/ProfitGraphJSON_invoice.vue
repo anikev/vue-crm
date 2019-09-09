@@ -5,8 +5,9 @@
         
      <table>
 <tr>
+    <td>План: Операционный {{computedplanOper}}</td>
     <td>План Виталий: {{computedPlanVital}}</td>
-    <td>Операционный {{computedplanOper}}</td>
+    
 </tr>
    
      </table>
@@ -31,6 +32,7 @@ import { functions} from 'firebase';
          planVital:2450000,
          planOper:2450000,
          
+         
       }
     },
     computed:{
@@ -51,67 +53,82 @@ import { functions} from 'firebase';
         var m_InWork = obj
         .filter(i =>  i.employee === 'Минаева НВ')
         .filter(i =>  i.inWork === true)
-        var arrayProfit = Object.keys(m_InWork).map(function(key) {
-            return m_InWork[key].profit;
-        });
+        // var arrayProfit = Object.keys(m_InWork).map(function(key) {
+        //     return m_InWork[key].profit;
+        // });
         
-        var sum = 0;
-        for (var i = 0; i < arrayProfit.length; i++) {
-            sum = sum + parseInt(arrayProfit[i]);
+        var sum = 0
+        var tempSum = 0
+        for (var i = 0; i < m_InWork.length; i++) {
+            sum = sum + parseInt(m_InWork[i].profit);
 
         }
         var workInvoice = [];
-
+        
         workInvoice.push(sum)
-        console.log("!!!"+sum)
+        
+        tempSum = sum
 
         /////////////////////////////////////////////////////
+        // только счета Минаева
+        var m_invoice = obj
+        .filter(i =>  i.employee === 'Минаева НВ')
+          .filter(i =>  i.inWork === false)
+//   var arrayProfit = Object.keys(m_invoice).map(function(key) {
+//             return m_invoice[key].profit;
+//         });
+        
+        var sum = 0;
+        for (var i = 0; i < m_invoice.length; i++) {
+            sum = sum + parseInt(m_invoice[i].profit);
 
+        }
+        var Invoice = [];
+        Invoice.push(sum)
+
+        tempSum = tempSum + sum;
+        var fact=[]
+        fact.push(this.planOper - tempSum)
+        tempSum = 0
+
+
+
+        ///////////////////////
         
         var v_InWork = obj
 
         .filter(i =>  i.employee === 'Кузнецов Виталий Александрович')
         .filter(i =>  i.inWork === true)
-        var arrayProfit = Object.keys(v_InWork).map(function(key) {
-            return v_InWork[key].profit;
-        });
+        // var arrayProfit = Object.keys(v_InWork).map(function(key) {
+        //     return v_InWork[key].profit;
+        // });
         
         var sum = 0;
-        for (var i = 0; i < arrayProfit.length; i++) {
-            sum = sum + parseInt(arrayProfit[i]);
+        for (var i = 0; i < v_InWork.length; i++) {
+            sum = sum + parseInt(v_InWork[i].profit);
 
         }
         workInvoice.push(sum)
-///////////////////////////////////////////////////
-                // только счета 
-        var m_invoice = obj
-        .filter(i =>  i.employee === 'Минаева НВ')
-          .filter(i =>  i.inWork === false)
-  var arrayProfit = Object.keys(m_invoice).map(function(key) {
-            return m_invoice[key].profit;
-        });
-        
-        var sum = 0;
-        for (var i = 0; i < arrayProfit.length; i++) {
-            sum = sum + parseInt(arrayProfit[i]);
-
-        }
-        var Invoice = [];
-        Invoice.push(sum)
-        ///////////////////////////
+        tempSum = sum
+                
+        //Только счета Кузнецов
         var v_invoice = obj
         .filter(i =>  i.employee === 'Кузнецов Виталий Александрович')
         .filter(i =>  i.inWork === false)
-        var arrayProfit = Object.keys(v_invoice).map(function(key) {
-            return v_invoice[key].profit;
-        });
+        // var arrayProfit = Object.keys(v_invoice).map(function(key) {
+        //     return v_invoice[key].profit;
+        // });
         
         var sum = 0;
-        for (var i = 0; i < arrayProfit.length; i++) {
-            sum = sum + parseInt(arrayProfit[i]);
+        for (var i = 0; i < v_invoice.length; i++) {
+            sum = sum + parseInt(v_invoice[i].profit);
 
         }
            Invoice.push(sum)
+           tempSum = tempSum + sum
+           fact.push(this.planVital - tempSum)
+
+           consoleLog();
 
            this.ref.onSnapshot((querySnapshot) => {
 
@@ -213,7 +230,7 @@ import { functions} from 'firebase';
             }, {
                 data: Invoice
             },{
-                data: [2450000,2450000]
+                data: fact
             }])
            })
     
