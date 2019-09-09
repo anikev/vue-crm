@@ -1,0 +1,112 @@
+<template>
+ 
+
+<div id="app">
+ 
+   
+     
+  <div class="row">
+    <div class="col-sm">
+      <div id="chart">
+           Выручка операционного отдела
+    </div>
+     </div>
+    <div class="col-sm">
+
+    
+    <button @click="addToMassive()">Добавить значение</button>
+    </div>
+  </div>
+</div>
+  
+  
+</template>
+
+<script>
+//import scss from '../../assets/scss/materialize.min.css'
+import TaskService from '@/services/TaskService'
+//import LineExample from '../LineCharts'
+import ApexCharts from 'apexcharts'
+import firebase from '../Firebase'
+
+  export default {
+   // comments:{LineExample},
+        data() {
+       return {
+         
+      
+    
+         show : false,
+        ref: firebase.firestore().collection('tasks'),
+          numb : 0,
+         titleTasks: [],
+         profitTasks: [],
+         tasks: [],
+        input: {
+        title: "",
+        description: "",
+        checked : true,
+         },
+       }
+   },
+  created () {
+  this.ref.onSnapshot((querySnapshot) => {
+      this.tasks = [];
+      
+      querySnapshot.forEach((doc) => {
+        
+        
+        this.tasks.push({
+          
+          //title: doc.data().title,
+           profit:doc.data().profit
+          
+        });
+         
+      });
+      var result = Object.keys(this.tasks).map(function(key) {
+      return this.tasks[key];
+        });
+        
+     
+     console.log(result)
+     var options = {
+  chart: {
+    type: 'line'
+  },
+  series: [{
+    name: 'sales',
+    data: [30,40,35,50,49,60,70,91,125]
+  }],
+  xaxis: {
+    categories: [1991,1992,1993,1994,1995,1996,1997, 1998,1999]
+  }
+}
+
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+
+chart.render();
+    });
+  },
+         methods: {
+          
+
+    
+  },
+  
+  }
+
+//function to sort table data alphabetically
+console.log("Готово")
+var ordonner = function(a, b) {
+  return (a.lname > b.lname);
+};
+
+
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="scss"  scoped>
+@import '../../assets/materialize.min.css';
+
+</style>

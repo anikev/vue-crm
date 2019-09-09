@@ -374,6 +374,6 @@ var ordonner = function(a, b) {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss"  scoped>
-@import '../../assets/materialize.min.css';
+@import '../../assets/materialize.min.scss';
 
 </style>

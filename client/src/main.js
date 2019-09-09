@@ -8,12 +8,13 @@ import BootstrapVue from 'bootstrap-vue'
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap-vue/dist/bootstrap-vue.css"
 import VueApexCharts from 'vue-apexcharts'
+import JSONinvoice from '../src/components/pages/ProfitGraphJSON_invoice.vue'
 
 var VueResource = require('vue-resource');
 Vue.use(VueResource);
 
 Vue.component('apexchart', VueApexCharts)
-
+Vue.component('JSONinvoice', JSONinvoice)
 
 
 Vue.config.productionTip = false
